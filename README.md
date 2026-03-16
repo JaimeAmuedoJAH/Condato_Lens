@@ -10,7 +10,7 @@ El reporte está orientado a equipos de **ingeniería, DevOps y producto** para 
 
 ---
 
-## 👩‍💻 Contribuyentes
+## Contribuyentes
 
   | Nombre           | GitHub | LinkedIn |
 |------------------|--------|----------|
