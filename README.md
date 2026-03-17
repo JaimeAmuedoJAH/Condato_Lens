@@ -174,10 +174,7 @@ condato-lens/
 │
 ├── docs/
 │   ├── briefing.pdf          # Briefing original del proyecto
-│   └── presentacion.pdf      # Presentación final del proyecto
-│
-├── docker/
-│   └── docker-compose.yml    # Configuración de Docker
+│   └── Condato_Lens_Dashboard_técnico.pdf      # Presentación final del proyecto
 │
 └── README.md
 ```
@@ -189,7 +186,7 @@ condato-lens/
 | Documento | Descripción |
 |-----------|-------------|
 | [`/docs/briefing.pdf`](./docs/briefing.pdf) | Briefing pedagógico original facilitado por Don Bosco |
-| [`/docs/presentacion.pdf`](./docs/presentacion.pdf) | Presentación final entregada al cliente |
+| [`/docs/presentacion.pdf`](./docs/Condato_Lens_Dashboard_técnico.pdf) | Presentación final entregada al cliente |
 
 ---
 
