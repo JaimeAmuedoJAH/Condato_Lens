@@ -1,12 +1,27 @@
-<p align="center">
-  <img src="assets/logo.jpg" alt="Dashboard preview" width="300">
-</p>
+# Condato Lens 🔍
 
-## Descripción general
+Panel de monitorización técnica y analítica sobre el uso de las aplicaciones de Condato,
+desarrollado como proyecto pedagógico en el marco del programa
+**Data Analyst / Andalucía / P1 · 2025-2026** (Don Bosco Salesianos Social).
 
-Este documento corresponde a un **reporte exportado desde Metabase** que analiza el rendimiento de aplicaciones backend durante un periodo determinado. El objetivo del informe es **monitorizar el comportamiento del sistema, detectar errores y localizar cuellos de botella en los endpoints de la API**.
+---
 
-El reporte está orientado a equipos de **ingeniería, DevOps y producto** para facilitar el seguimiento del estado de la aplicación y apoyar la toma de decisiones técnicas.
+## 📋 Descripción general
+
+Condato Lens es un dashboard BI que centraliza KPIs técnicos y analíticos
+sobre el comportamiento de las aplicaciones de Condato, conectando directamente
+con su base de datos MongoDB y visualizando la información en tiempo real
+a través de Metabase.
+
+El proyecto nace de la necesidad del equipo de soporte técnico de Condato
+de tener visibilidad sobre el rendimiento de sus aplicaciones sin depender
+de consultas manuales a base de datos.
+
+El reporte está orientado a equipos de **ingeniería, DevOps y producto** para
+facilitar el seguimiento del estado de la aplicación y apoyar la toma de
+decisiones técnicas.
+
+---
 
 ---
 
@@ -21,156 +36,175 @@ El reporte está orientado a equipos de **ingeniería, DevOps y producto** para 
 
 ---
 
-# Información del reporte
+## 🛠️ Stack tecnológico
 
-- **Herramienta de análisis:** Metabase  
-- **Dataset / fuente:** `Base de datos de MongoDB. Registry`
-- **Aplicación analizada:** aplicaciones .backend  
-- **Periodo analizado:** Periodo a seleccionar con el filtro de fecha.  
-
----
-
-# KPIs principales
-
-El dashboard incluye varios indicadores clave para evaluar el estado del sistema.
-
-## Total de peticiones
-
-Número total de requests recibidas por la API durante el periodo analizado.
-
-Este indicador permite:
-
-- Medir la carga del sistema
-- Detectar picos de tráfico
-- Correlacionar tráfico con errores o degradación de rendimiento
+- **MongoDB** — Base de datos de origen (registros en crudo)
+- **Metabase** — Plataforma BI para construcción de dashboards
+- **Docker** — Despliegue y conexión de Metabase con MongoDB
 
 ---
 
-## Errores totales
+## 📦 Requisitos previos
 
-Cantidad total de peticiones que terminaron con códigos de error HTTP.
-
-Sirve para:
-
-- Detectar fallos en el sistema
-- Medir estabilidad de la aplicación
-- Comparar la evolución del error rate en el tiempo
+- [Docker](https://www.docker.com/) instalado y en ejecución
+- Acceso a la base de datos MongoDB de Condato
+- Credenciales de conexión (URI, usuario, contraseña)
 
 ---
 
-## Tiempo medio por petición
+## 🚀 Instalación y puesta en marcha
 
-Tiempo promedio de respuesta de la API.
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/tu-usuario/condato-lens.git
+cd condato-lens
+```
 
-Se utiliza para:
+### 2. Levantar Metabase con Docker
+```bash
+docker pull metabase/metabase
+docker run -d \
+  -p 3000:3000 \
+  --name condato-lens \
+  metabase/metabase
+```
 
-- Medir la latencia general del sistema
-- Detectar degradaciones de rendimiento
-- Identificar posibles problemas de infraestructura o base de datos
+### 3. Acceder a Metabase
 
----
+Abre el navegador en `http://localhost:3000` y completa el asistente de configuración inicial.
 
-## Porcentaje de error
+### 4. Conectar con MongoDB
 
-Relación entre peticiones fallidas y peticiones totales.
-
-Este KPI permite evaluar rápidamente la **salud general del servicio**.
-
----
-
-# Visualizaciones incluidas
-
-## Tendencia diaria de peticiones erróneas
-
-Gráfica temporal que muestra la evolución de errores por día dentro del periodo analizado.
-
-Objetivos:
-
-- Detectar días con anomalías
-- Identificar incidentes o despliegues problemáticos
-- Analizar patrones de fallo
-
----
-
-## Errores por código HTTP
-
-Distribución de errores por tipo de código HTTP, por ejemplo:
-
-- `400` – Bad Request  
-- `401` – Unauthorized  
-- `403` – Forbidden  
-- `404` – Not Found  
-- `500` – Internal Server Error  
-
-Esto permite distinguir entre:
-
-- Errores del cliente
-- Errores de autenticación
-- Fallos del servidor
+1. Ve a **Settings → Admin → Databases → Add Database**
+2. Selecciona **MongoDB** como tipo de base de datos
+3. Introduce los datos de conexión:
+   - **Host:** tu-host-mongodb
+   - **Puerto:** 27017
+   - **Base de datos:** nombre-de-la-db
+   - **Usuario / Contraseña:** tus credenciales
+4. Haz clic en **Save**
 
 ---
 
-## Errores por endpoint
+## 📊 Dashboards
 
-Análisis de qué rutas de la API generan más errores.
+### Dashboard Técnico — `.backend`
 
-Sirve para:
+Orientado al equipo de soporte e ingeniería. Analiza el rendimiento de las
+aplicaciones backend durante el periodo seleccionado.
 
-- Localizar endpoints problemáticos
-- Identificar funcionalidades inestables
-- Priorizar correcciones
+**Información del reporte**
+- **Herramienta:** Metabase
+- **Fuente de datos:** Base de datos MongoDB · colección `Registry`
+- **Aplicación analizada:** aplicaciones `.backend`
+- **Periodo:** seleccionable mediante filtro de fecha
+
+**KPIs principales**
+
+| KPI | Descripción |
+|-----|-------------|
+| Total de peticiones | Número total de requests recibidas por la API |
+| Errores totales | Peticiones que terminaron con códigos de error HTTP |
+| Tiempo medio por petición | Latencia promedio de respuesta de la API |
+| Porcentaje de error | Relación entre peticiones fallidas y totales |
+| Usuarios concurrentes | Total de usuarios activos en el periodo |
+
+**Visualizaciones incluidas**
+
+- **Tendencia diaria de errores** → detecta días con anomalías e incidentes
+- **Errores por código HTTP** → distingue entre errores de cliente (4xx) y servidor (5xx)
+- **Errores por endpoint** → localiza rutas problemáticas de la API
+- **Top 10 peticiones más lentas** → identifica cuellos de botella por tiempo de respuesta
 
 ---
 
-## Top 10 peticiones más lentas
+### Dashboard Analítico — `.frontend`
 
-Listado de los endpoints con mayor tiempo de respuesta.
+Orientado a entender el comportamiento del usuario final.
 
-Este análisis permite:
+**KPIs principales**
 
-- Detectar cuellos de botella
-- Identificar endpoints que necesitan optimización
-- Encontrar posibles problemas de consultas a base de datos o servicios externos
+| KPI | Descripción |
+|-----|-------------|
+| Total usuarios concurrentes | Usuarios activos en el periodo analizado |
+
+**Visualizaciones incluidas**
+
+- **Rutas con más tráfico** → funcionalidades más utilizadas
+- **Sistemas operativos más usados** → perfil de dispositivo del usuario
+- **Navegadores más usados** → contexto de acceso web vs móvil
 
 ---
 
-# Casos de uso del reporte
+## 💡 Casos de uso
 
 Este dashboard se utiliza principalmente para:
 
-- Monitorización del backend
-- Análisis de incidentes
-- Mejora de rendimiento
-- Priorización de optimizaciones
-- Seguimiento tras despliegues
+- Monitorización continua del backend
+- Análisis de incidentes en producción
+- Mejora y optimización de rendimiento
+- Priorización de correcciones técnicas
+- Seguimiento post-despliegue
 
----
-
-# Recomendaciones de uso
-
-Se recomienda revisar este reporte:
-
+Se recomienda revisar el reporte:
 - Después de despliegues importantes
 - Cuando se detecten incidencias en producción
 - De forma periódica en revisiones de rendimiento
 
-Además, es útil combinarlo con:
-
-- Logs de aplicación
-- Métricas de infraestructura
-- Herramientas de observabilidad (APM)
+Es útil combinarlo con logs de aplicación, métricas de infraestructura
+y herramientas de observabilidad (APM).
 
 ---
 
-# Posibles mejoras futuras
-
-Para ampliar el valor del dashboard se podrían añadir:
+## 🔮 Posibles mejoras futuras
 
 - Percentiles de latencia (P95, P99)
-- Tiempos de respuesta por endpoint
-- Tráfico por cliente o usuario
+- Tiempos de respuesta desglosados por endpoint
+- Tráfico segmentado por cliente o usuario
 - Comparación entre versiones de la API
 - Métricas de base de datos
-- Análisis analítico de las aplicaciones .frontend
+- Análisis completo de aplicaciones `.frontend`
+- Alertas automáticas ante picos de error
 
 ---
+
+## 📁 Estructura del repositorio
+```
+condato-lens/
+│
+├── docs/
+│   ├── briefing.pdf          # Briefing original del proyecto
+│   └── presentacion.pdf      # Presentación final del proyecto
+│
+├── docker/
+│   └── docker-compose.yml    # Configuración de Docker
+│
+└── README.md
+```
+
+---
+
+## 📄 Documentación
+
+| Documento | Descripción |
+|-----------|-------------|
+| [`/docs/briefing.pdf`](./docs/briefing.pdf) | Briefing pedagógico original facilitado por Don Bosco |
+| [`/docs/presentacion.pdf`](./docs/presentacion.pdf) | Presentación final entregada al cliente |
+
+---
+
+## 🗓️ Contexto del proyecto
+
+| | |
+|--|--|
+| **Cliente** | Condato · javier.rodriguez@condato.es |
+| **Duración** | 2 semanas |
+| **Datos procesados** | Millones de registros · filtrado a últimos 90 días |
+| **Tecnologías aprendidas** | MongoDB, Metabase, Docker |
+
+---
+
+## 📝 Licencia
+
+Proyecto pedagógico desarrollado en el marco del programa Data Analyst
+de Don Bosco Salesianos Social. Uso educativo.
